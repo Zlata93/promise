@@ -44,6 +44,9 @@
 
     function resolve(self, value) {
         const then = getThen(value);
+        if (value === self) {
+            throw new TypeError('Promise cant be resolved with the same promise');
+        }
         try {
             if (then && typeof then === 'function') {
                 doResolve(then.bind(value), self);

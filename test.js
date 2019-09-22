@@ -1,7 +1,7 @@
 var promise = new MyPromise(function (resolve){
     resolve(42)
 });
-// debugger
+
 promise
     .then(function (value) {
         return value + 1
@@ -16,16 +16,8 @@ promise
     })
     .then(
         function () { console.log('Будет проигнорировано') },
-        // function () { return 'ошибка обработана' }
+        function () { return 'ошибка обработана' }
     )
-    .then(function (value) {
-        console.log(value) // "ошибка обработана"
-        // debugger
-    })
-    .catch(err => {
-        console.log('ошибка обработана!')
-        return err;
-    })
     .then(function (value) {
         console.log(value) // "ошибка обработана"
     });

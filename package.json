@@ -1,0 +1,23 @@
+{
+  "name": "promise",
+  "version": "1.0.0",
+  "description": "Promise polyfill coding exercise",
+  "main": "promise.js",
+  "dependencies": {},
+  "devDependencies": {
+    "eslint": "^6.4.0"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Zlata93/promise.git"
+  },
+  "author": "Zlata Kotlova",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/Zlata93/promise/issues"
+  },
+  "homepage": "https://github.com/Zlata93/promise#readme"
+}

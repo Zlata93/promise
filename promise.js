@@ -2,9 +2,9 @@
   /**
    * проверка наличия нативного промиса
    */
-  if (context.Promise && Object.prototype.toString.call(new Promise(function () {})) === '[object Promise]') {
-    return;
-  }
+  // if (context.Promise && Object.prototype.toString.call(new Promise(function () {})) === '[object Promise]') {
+  //   return;
+  // }
 
   /**
    * три возможных состояния промиса
@@ -24,7 +24,7 @@
    * Проверяет, является ли объект thenable
    *
    * @param  {any} value - значение, с которым пытается зарезолвиться промис
-   * @return {function} - функция then для дальнейшего чейнинга
+   * @return {function|undefined} - функция then для дальнейшего чейнинга, либо undefined при ее отсутствии
    *
    */
   function getThen (value) {
@@ -47,7 +47,7 @@
       self._deferreds.push(handler);
     } else if (self._state === 1) {
       handleHelper(handler, 'didFulfill', self);
-    } else if (self._state === 2) {
+    } else {
       handleHelper(handler, 'didReject', self);
     }
   }
@@ -71,20 +71,20 @@
         try {
           res = handler[cbName](self._value);
         } catch (e) {
-          reject(handler.promise, res);
+          reject(handler.promise, e);
           return;
         }
         resolve(handler.promise, res);
       } else {
-        resolve(handler.promise, self._value);
+        self._state === 1 ? resolve(handler.promise, self._value) : reject(handler.promise, self._value);
       }
     }, 0);
   }
 
   /**
    * Функция-резолвер, которая меняет состояние текущего промиса на
-   * зарезолвенное и записывает переданное ей значение как его результат,
-   * разрешения после чего запускает обработку всех отложенных
+   * выполненное успешно и записывает переданное ей значение как его результат
+   * разрешения, после чего запускает обработку всех отложенных
    * функций-обработчиков для текущего промиса
    * либо запускает цеполчку промисификации (если переданное значение
    * является thenable объектом)
@@ -117,7 +117,7 @@
 
   /**
    * Функция-реджектер, которая меняет состояние текущего промиса на
-   * rejected и записывает переданную ей ошибку как его результат
+   * выполненное с ошибкой и записывает переданную ей ошибку как его результат
    * разрешения, после чего запускает обработку всех отложенных функций-обработчиков
    * для текущего промиса
    *
@@ -136,7 +136,7 @@
   }
 
   /**
-   * Функция-экзекьютор (исполнитель), запускает механизм резолва/реджекта
+   * Функция-исполнитель, запускает механизм резолва/реджекта
    * промиса и следит за тем, чтобы вызов одной из функций происходил
    * только один раз
    *

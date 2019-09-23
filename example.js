@@ -1,4 +1,7 @@
-var promise = new MyPromise(function (resolve){
+/**
+ * примеры использования
+ */
+var promise = new MyPromise(function (resolve) {
     resolve(42);
 });
 
@@ -20,4 +23,17 @@ promise
     )
     .then(function (value) {
         console.log(value); // "ошибка обработана"
+    });
+
+var promise1 = new MyPromise(function (resolve) {
+    foo.bar();
+    resolve(42);
+});
+
+promise1
+    .then(function(value) {
+    console.log('Не выведется ', value);
+    })
+    .catch(function (error) {
+        console.log('Выведется ', error);
     });
